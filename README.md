@@ -1,5 +1,11 @@
 # Read Evaluate Print Loop ++
 
+This is a fork repo from [AmokHuginnsson/replxx](https://github.com/AmokHuginnsson/replxx) and used for renash_toolkit project.
+
+No PR will be started from here.
+
+------------
+
 ![demo](https://codestation.org/download/replxx.gif)
 
 ![Build Status](https://github.com/AmokHuginnsson/replxx/actions/workflows/ci.yml/badge.svg)
