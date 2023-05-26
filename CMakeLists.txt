@@ -47,11 +47,11 @@ set(REPLXX_SRC replxx-sources PARENT_SCOPE)
 
 if(REPLXX_BUILD_ALONE)
 
-	add_library(replxx ${replxx-sources})
-	add_library(rena::replxx ALIAS replxx)
+	add_library(renash_toolkit_replxx ${replxx-sources})
+	add_library(rena::replxx ALIAS renash_toolkit_replxx)
 
 	target_include_directories(
-		replxx
+		renash_toolkit_replxx
 		PUBLIC
 			$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 			$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -59,7 +59,7 @@ if(REPLXX_BUILD_ALONE)
 			$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
 	)
 	target_compile_definitions(
-		replxx
+		renash_toolkit_replxx
 		PUBLIC
 			$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:REPLXX_STATIC>
 			$<$<BOOL:${BUILD_SHARED_LIBS}>:REPLXX_BUILDING_DLL>
@@ -67,7 +67,7 @@ if(REPLXX_BUILD_ALONE)
 			$<$<CXX_COMPILER_ID:MSVC>:_CRT_SECURE_NO_WARNINGS=1 /ignore:4503>
 	)
 	target_compile_options(
-		replxx
+		renash_toolkit_replxx
 		PRIVATE
 			$<$<AND:$<CONFIG:RelWithDebInfo>,${compiler-id-clang-or-gnu}>:-fomit-frame-pointer>
 			$<$<AND:$<CONFIG:MinSizeRel>,${compiler-id-clang-or-gnu}>:-Os>
@@ -80,7 +80,7 @@ if(REPLXX_BUILD_ALONE)
 	)
 	if (NOT CMAKE_VERSION VERSION_LESS 3.13)
 		target_link_options(
-			replxx
+			renash_toolkit_replxx
 			PRIVATE
 				$<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:GNU>>:-g -ggdb -g3 -ggdb3>
 				$<${coverage-config}:--coverage>
@@ -89,20 +89,20 @@ if(REPLXX_BUILD_ALONE)
 	else()
 		# "safest" way prior to 3.13
 		target_link_libraries(
-			replxx
+			renash_toolkit_replxx
 			PRIVATE
 				$<${coverage-config}:--coverage>
 				$<${is-msvc}:/ignore:4099>
 		)
 	endif()
-	target_link_libraries(replxx PUBLIC Threads::Threads)
-	set_target_properties(replxx PROPERTIES VERSION ${PROJECT_VERSION})
+	target_link_libraries(renash_toolkit_replxx PUBLIC Threads::Threads)
+	set_target_properties(renash_toolkit_replxx PROPERTIES VERSION ${PROJECT_VERSION})
 
-	set_property(TARGET replxx PROPERTY DEBUG_POSTFIX -d)
-	set_property(TARGET replxx PROPERTY RELWITHDEBINFO_POSTFIX -rd)
-	set_property(TARGET replxx PROPERTY MINSIZEREL_POSTFIX)
+	set_property(TARGET renash_toolkit_replxx PROPERTY DEBUG_POSTFIX -d)
+	set_property(TARGET renash_toolkit_replxx PROPERTY RELWITHDEBINFO_POSTFIX -rd)
+	set_property(TARGET renash_toolkit_replxx PROPERTY MINSIZEREL_POSTFIX)
 	if (NOT BUILD_SHARED_LIBS AND MSVC)
-		set_property(TARGET replxx PROPERTY OUTPUT_NAME replxx-static)
+		set_property(TARGET renash_toolkit_replxx PROPERTY OUTPUT_NAME renash_toolkit_replxx-static)
 	endif()
 
 	if (REPLXX_BUILD_EXAMPLES)
