@@ -5,6 +5,8 @@
 #include <windows.h>
 #include <io.h>
 
+namespace rena {
+
 namespace replxx {
 
 static const int FOREGROUND_WHITE =
@@ -40,5 +42,7 @@ int win_write( HANDLE, bool, char const*, int );
 extern WinAttributes WIN_ATTR;
 
 }
+
+} // namespace rena
 
 #endif

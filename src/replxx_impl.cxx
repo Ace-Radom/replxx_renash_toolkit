@@ -36,7 +36,9 @@
 #include "replxx.hxx"
 
 using namespace std;
-using namespace replxx::color;
+using namespace rena::replxx::color;
+
+namespace rena {
 
 namespace replxx {
 
@@ -2575,3 +2577,4 @@ void Replxx::ReplxxImpl::dynamic_refresh(Prompt& oldPrompt, Prompt& newPrompt, c
 
 }
 
+} // namespace rena

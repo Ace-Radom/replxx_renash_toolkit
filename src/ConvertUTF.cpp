@@ -43,6 +43,8 @@
 #include <stdio.h>
 #endif
 
+namespace rena {
+
 namespace replxx {
 
 #define UNI_SUR_HIGH_START  (UTF32)0xD800
@@ -250,6 +252,8 @@ ConversionResult ConvertUTF8toUTF32 (
 }
 
 }
+
+} // namespace rena
 
 /* ---------------------------------------------------------------------
 

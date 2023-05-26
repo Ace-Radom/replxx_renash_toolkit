@@ -8,6 +8,8 @@
 
 using namespace std;
 
+namespace rena {
+
 namespace replxx {
 
 WinAttributes WIN_ATTR;
@@ -139,6 +141,8 @@ int win_write( HANDLE out_, bool autoEscape_, char const* str_, int size_ ) {
 }
 
 }
+
+} // namespace rena
 
 #endif
 

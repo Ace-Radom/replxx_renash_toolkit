@@ -71,6 +71,10 @@ enum { DELETE_32F68A60CEF40FAEDBC6AF20298C1A1E = DELETE };
 enum { DELETE = DELETE_32F68A60CEF40FAEDBC6AF20298C1A1E };
 #endif
 
+namespace rena {
+
+
+
 namespace replxx {
 
 class REPLXX_IMPEXP Replxx {
@@ -705,6 +709,8 @@ Replxx::Color rgb666( int red, int green, int blue );
 }
 
 }
+
+} // namespace rena
 
 #endif /* HAVE_REPLXX_HXX_INCLUDED */
 

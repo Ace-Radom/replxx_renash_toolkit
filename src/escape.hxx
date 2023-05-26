@@ -1,6 +1,8 @@
 #ifndef REPLXX_ESCAPE_HXX_INCLUDED
 #define REPLXX_ESCAPE_HXX_INCLUDED 1
 
+namespace rena {
+
 namespace replxx {
 
 namespace EscapeSequenceProcessing {
@@ -32,6 +34,8 @@ char32_t doDispatch(char32_t c);
 }
 
 }
+
+};
 
 #endif
 

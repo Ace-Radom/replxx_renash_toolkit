@@ -99,6 +99,8 @@ typedef unsigned char	UTF8;	/* typically 8 bits */
 #include <stdint.h>
 #include <string>
 
+namespace rena {
+
 namespace replxx {
 
 typedef uint32_t      UTF32;
@@ -133,6 +135,8 @@ ConversionResult ConvertUTF32toUTF8 (
 								UTF8** targetStart, UTF8* targetEnd, ConversionFlags flags);
 
 }
+
+} // namespace rena
 
 #endif /* REPLXX_CONVERT_UTF8_H_INCLUDED */
 

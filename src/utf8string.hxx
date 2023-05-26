@@ -5,6 +5,8 @@
 
 #include "unicodestring.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 class Utf8String {
@@ -95,6 +97,8 @@ private:
 };
 
 }
+
+} // namespace rena
 
 #endif
 

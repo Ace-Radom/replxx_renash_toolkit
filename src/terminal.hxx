@@ -12,6 +12,8 @@
 
 #include "utf8string.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 class Terminal {
@@ -91,6 +93,8 @@ extern bool out;
 }
 
 }
+
+} // namespace rena
 
 #endif
 

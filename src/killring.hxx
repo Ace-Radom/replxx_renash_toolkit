@@ -5,6 +5,8 @@
 
 #include "unicodestring.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 class KillRing {
@@ -73,6 +75,8 @@ public:
 };
 
 }
+
+} // namespace rena
 
 #endif
 

@@ -9,6 +9,8 @@
 
 #undef min
 
+namespace rena {
+
 namespace replxx {
 
 int mk_wcwidth( char32_t );
@@ -173,6 +175,8 @@ std::string now_ms_str( void ) {
 	strftime( str, BUFF_SIZE, "%Y-%m-%d %H:%M:%S.", &broken );
 	snprintf( str + sizeof ( "YYYY-mm-dd HH:MM:SS" ), 5, "%03d", static_cast<int>( ms.count() % 1000 ) );
 	return ( str );
+}
+
 }
 
 }

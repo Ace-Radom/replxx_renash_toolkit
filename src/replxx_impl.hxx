@@ -47,6 +47,8 @@
 #include "utf8string.hxx"
 #include "prompt.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 class Replxx::ReplxxImpl {
@@ -299,6 +301,8 @@ private:
 };
 
 }
+
+} // namespace rena
 
 #endif
 

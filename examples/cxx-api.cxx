@@ -15,8 +15,8 @@
 #include "replxx.hxx"
 #include "util.h"
 
-using Replxx = replxx::Replxx;
-using namespace replxx::color;
+using Replxx = rena::replxx::Replxx;
+using namespace rena::replxx::color;
 
 class Tick {
 	typedef std::vector<char32_t> keys_t;
@@ -208,10 +208,10 @@ void hook_color( std::string const& context, Replxx::colors_t& colors, syntax_hi
 			color = it->second;
 		}
 		if ( bold ) {
-			color = replxx::color::bold( color );
+			color = rena::replxx::color::bold( color );
 		}
 		if ( underline ) {
-			color = replxx::color::underline( color );
+			color = rena::replxx::color::underline( color );
 		}
 		for ( int k( 0 ); k < wordLen; ++ k ) {
 			Replxx::Color& c( colors.at( colorOffset + k ) );
@@ -332,7 +332,7 @@ int main( int argc_, char** argv_ ) {
 		for ( int g( 0 ); g < 6; ++ g ) {
 			for ( int b( 0 ); b < 6; ++ b ) {
 				snprintf( label, MAX_LABEL_NAME, "rgb%d%d%d", r, g, b );
-				word_color.insert( std::make_pair( label, replxx::color::rgb666( r, g, b ) ) );
+				word_color.insert( std::make_pair( label, rena::replxx::color::rgb666( r, g, b ) ) );
 				for ( int br( 0 ); br < 6; ++ br ) {
 					for ( int bg( 0 ); bg < 6; ++ bg ) {
 						for ( int bb( 0 ); bb < 6; ++ bb ) {
@@ -340,7 +340,7 @@ int main( int argc_, char** argv_ ) {
 							word_color.insert(
 								std::make_pair(
 									label,
-									rgb666( r, g, b ) | replxx::color::bg( rgb666( br, bg, bb ) )
+									rgb666( r, g, b ) | rena::replxx::color::bg( rgb666( br, bg, bb ) )
 								)
 							);
 						}
@@ -366,7 +366,7 @@ int main( int argc_, char** argv_ ) {
 	for ( Replxx::Color bg : colorCodes ) {
 		for ( Replxx::Color fg : colorCodes ) {
 			snprintf( label, MAX_LABEL_NAME, "c_%d_%d", static_cast<int>( fg ), static_cast<int>( bg ) );
-			word_color.insert( std::make_pair( label, fg | replxx::color::bg( bg ) ) );
+			word_color.insert( std::make_pair( label, fg | rena::replxx::color::bg( bg ) ) );
 		}
 	}
 

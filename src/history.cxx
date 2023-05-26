@@ -18,6 +18,8 @@
 
 using namespace std;
 
+namespace rena {
+
 namespace replxx {
 
 namespace {
@@ -425,4 +427,6 @@ void History::reset_iters( void ) {
 }
 
 }
+
+} // namespace rena
 

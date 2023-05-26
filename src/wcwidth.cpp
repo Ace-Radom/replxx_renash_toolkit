@@ -63,6 +63,8 @@
 #include <string>
 #include <memory>
 
+namespace rena {
+
 namespace replxx {
 
 struct interval {
@@ -294,3 +296,4 @@ int mk_wcwidth(char32_t ucs) {
 
 }
 
+} // namespace rena

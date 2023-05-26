@@ -40,6 +40,8 @@ static DWORD const ENABLE_VIRTUAL_TERMINAL_PROCESSING = 4;
 
 using namespace std;
 
+namespace rena {
+
 namespace replxx {
 
 namespace tty {
@@ -778,4 +780,6 @@ int Terminal::install_window_change_handler( void ) {
 #endif
 
 }
+
+} // namespace rena
 

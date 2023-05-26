@@ -9,6 +9,8 @@
 #endif
 #endif
 
+namespace rena {
+
 #if ! ( defined( __cpp_lib_char8_t ) || ( defined( __clang_major__ ) && ( __clang_major__ >= 8 ) && ( __cplusplus > 201703L ) ) )
 namespace replxx {
 typedef unsigned char char8_t;
@@ -26,5 +28,7 @@ extern bool is8BitEncoding;
 }
 
 }
+
+} // namespace rena
 
 #endif

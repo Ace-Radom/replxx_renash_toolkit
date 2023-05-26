@@ -6,6 +6,8 @@
 #include "unicodestring.hxx"
 #include "terminal.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 class Prompt {              // a convenience struct for grouping prompt info
@@ -42,5 +44,7 @@ struct DynamicPrompt : public Prompt {
 };
 
 }
+
+} // namespace rena
 
 #endif

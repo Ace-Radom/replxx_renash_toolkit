@@ -105,18 +105,20 @@
 #include "history.hxx"
 
 static_assert(
-	static_cast<int>( replxx::Replxx::ACTION::SEND_EOF ) == static_cast<int>( REPLXX_ACTION_SEND_EOF ),
+	static_cast<int>( rena::replxx::Replxx::ACTION::SEND_EOF ) == static_cast<int>( REPLXX_ACTION_SEND_EOF ),
 	"C and C++ `ACTION` APIs are missaligned!"
 );
 
 static_assert(
-	static_cast<int>( replxx::Replxx::KEY::PASTE_FINISH ) == static_cast<int>( REPLXX_KEY_PASTE_FINISH ),
+	static_cast<int>( rena::replxx::Replxx::KEY::PASTE_FINISH ) == static_cast<int>( REPLXX_KEY_PASTE_FINISH ),
 	"C and C++ `KEY` APIs are missaligned!"
 );
 
 using namespace std;
 using namespace std::placeholders;
-using namespace replxx;
+using namespace rena::replxx;
+
+namespace rena {
 
 namespace replxx {
 
@@ -339,41 +341,43 @@ Replxx::Color rgb666( int red_, int green_, int blue_ ) {
 
 }
 
+} // namespace rena
+
 ::Replxx* replxx_init() {
 	typedef ::Replxx* replxx_data_t;
-	return ( reinterpret_cast<replxx_data_t>( new replxx::Replxx::ReplxxImpl( nullptr, nullptr, nullptr ) ) );
+	return ( reinterpret_cast<replxx_data_t>( new rena::replxx::Replxx::ReplxxImpl( nullptr, nullptr, nullptr ) ) );
 }
 
 void replxx_end( ::Replxx* replxx_ ) {
-	delete reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ );
+	delete reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ );
 }
 
 void replxx_clear_screen( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->clear_screen( 0 );
 }
 
 void replxx_emulate_key_press( ::Replxx* replxx_, int unsigned keyPress_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->emulate_key_press( keyPress_ );
 }
 
 ReplxxActionResult replxx_invoke( ::Replxx* replxx_, ReplxxAction action_, int unsigned keyPress_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
-	return ( static_cast<ReplxxActionResult>( replxx->invoke( static_cast<replxx::Replxx::ACTION>( action_ ), keyPress_ ) ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	return ( static_cast<ReplxxActionResult>( replxx->invoke( static_cast<rena::replxx::Replxx::ACTION>( action_ ), keyPress_ ) ) );
 }
 
-replxx::Replxx::ACTION_RESULT key_press_handler_forwarder( key_press_handler_t handler_, char32_t code_, void* userData_ ) {
-	return ( static_cast<replxx::Replxx::ACTION_RESULT>( handler_( code_, userData_ ) ) );
+rena::replxx::Replxx::ACTION_RESULT key_press_handler_forwarder( key_press_handler_t handler_, char32_t code_, void* userData_ ) {
+	return ( static_cast<rena::replxx::Replxx::ACTION_RESULT>( handler_( code_, userData_ ) ) );
 }
 
 void replxx_bind_key( ::Replxx* replxx_, int code_, key_press_handler_t handler_, void* userData_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->bind_key( code_, std::bind( key_press_handler_forwarder, handler_, _1, userData_ ) );
 }
 
 int replxx_bind_key_internal( ::Replxx* replxx_, int code_, char const* actionName_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	try {
 		replxx->bind_key_internal( code_, actionName_ );
 	} catch ( ... ) {
@@ -383,19 +387,19 @@ int replxx_bind_key_internal( ::Replxx* replxx_, int code_, char const* actionNa
 }
 
 void replxx_get_state( ::Replxx* replxx_, ReplxxState* state ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
-	replxx::Replxx::State s( replxx->get_state() );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::State s( replxx->get_state() );
 	state->text = s.text();
 	state->cursorPosition = s.cursor_position();
 }
 
 void replxx_set_state( ::Replxx* replxx_, ReplxxState* state ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
-	replxx->set_state( replxx::Replxx::State( state->text, state->cursorPosition ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	replxx->set_state( rena::replxx::Replxx::State( state->text, state->cursorPosition ) );
 }
 
 void replxx_set_ignore_case( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_ignore_case( val );
 }
 
@@ -408,7 +412,7 @@ void replxx_set_ignore_case( ::Replxx* replxx_, int val ) {
  * @param preloadText text to begin with on the next call to replxx_input()
  */
 void replxx_set_preload_buffer(::Replxx* replxx_, const char* preloadText) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_preload_buffer( preloadText ? preloadText : "" );
 }
 
@@ -423,12 +427,12 @@ void replxx_set_preload_buffer(::Replxx* replxx_, const char* preloadText) {
  * and it must NOT be freed in the client.
  */
 char const* replxx_input( ::Replxx* replxx_, const char* prompt ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->input( prompt ) );
 }
 
 int replxx_print( ::Replxx* replxx_, char const* format_, ... ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	::std::va_list ap;
 	va_start( ap, format_ );
 	int size = static_cast<int>( vsnprintf( nullptr, 0, format_, ap ) );
@@ -446,7 +450,7 @@ int replxx_print( ::Replxx* replxx_, char const* format_, ... ) {
 }
 
 int replxx_write( ::Replxx* replxx_, char const* str, int length ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	try {
 		replxx->print( str, length );
 	} catch ( ... ) {
@@ -456,16 +460,16 @@ int replxx_write( ::Replxx* replxx_, char const* str, int length ) {
 }
 
 void replxx_set_prompt( ::Replxx* replxx_, const char* prompt ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_prompt( prompt );
 }
 
 struct replxx_completions {
-	replxx::Replxx::completions_t data;
+	rena::replxx::Replxx::completions_t data;
 };
 
 struct replxx_hints {
-	replxx::Replxx::hints_t data;
+	rena::replxx::Replxx::hints_t data;
 };
 
 void modify_fwd( replxx_modify_callback_t fn, std::string& line_, int& cursorPosition_, void* userData_ ) {
@@ -481,11 +485,11 @@ void modify_fwd( replxx_modify_callback_t fn, std::string& line_, int& cursorPos
 }
 
 void replxx_set_modify_callback(::Replxx* replxx_, replxx_modify_callback_t* fn, void* userData) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_modify_callback( std::bind( &modify_fwd, fn, _1, _2, userData ) );
 }
 
-replxx::Replxx::completions_t completions_fwd( replxx_completion_callback_t fn, std::string const& input_, int& contextLen_, void* userData ) {
+rena::replxx::Replxx::completions_t completions_fwd( replxx_completion_callback_t fn, std::string const& input_, int& contextLen_, void* userData ) {
 	replxx_completions completions;
 	fn( input_.c_str(), &completions, &contextLen_, userData );
 	return ( completions.data );
@@ -493,17 +497,17 @@ replxx::Replxx::completions_t completions_fwd( replxx_completion_callback_t fn, 
 
 /* Register a callback function to be called for tab-completion. */
 void replxx_set_completion_callback(::Replxx* replxx_, replxx_completion_callback_t* fn, void* userData) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_completion_callback( std::bind( &completions_fwd, fn, _1, _2, userData ) );
 }
 
-void highlighter_fwd( replxx_highlighter_callback_t fn, std::string const& input, replxx::Replxx::colors_t& colors, void* userData ) {
+void highlighter_fwd( replxx_highlighter_callback_t fn, std::string const& input, rena::replxx::Replxx::colors_t& colors, void* userData ) {
 	std::vector<ReplxxColor> colorsTmp( colors.size() );
 	std::transform(
 		colors.begin(),
 		colors.end(),
 		colorsTmp.begin(),
-		[]( replxx::Replxx::Color c ) {
+		[]( rena::replxx::Replxx::Color c ) {
 			return ( static_cast<ReplxxColor>( c ) );
 		}
 	);
@@ -513,17 +517,17 @@ void highlighter_fwd( replxx_highlighter_callback_t fn, std::string const& input
 		colorsTmp.end(),
 		colors.begin(),
 		[]( ReplxxColor c ) {
-			return ( static_cast<replxx::Replxx::Color>( c ) );
+			return ( static_cast<rena::replxx::Replxx::Color>( c ) );
 		}
 	);
 }
 
 void replxx_set_highlighter_callback( ::Replxx* replxx_, replxx_highlighter_callback_t* fn, void* userData ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_highlighter_callback( std::bind( &highlighter_fwd, fn, _1, _2, userData ) );
 }
 
-replxx::Replxx::hints_t hints_fwd( replxx_hint_callback_t fn, std::string const& input_, int& contextLen_, replxx::Replxx::Color& color_, void* userData ) {
+rena::replxx::Replxx::hints_t hints_fwd( replxx_hint_callback_t fn, std::string const& input_, int& contextLen_, rena::replxx::Replxx::Color& color_, void* userData ) {
 	replxx_hints hints;
 	ReplxxColor c( static_cast<ReplxxColor>( color_ ) );
 	fn( input_.c_str(), &hints, &contextLen_, &c, userData );
@@ -531,7 +535,7 @@ replxx::Replxx::hints_t hints_fwd( replxx_hint_callback_t fn, std::string const&
 }
 
 void replxx_set_hint_callback( ::Replxx* replxx_, replxx_hint_callback_t* fn, void* userData ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_hint_callback( std::bind( &hints_fwd, fn, _1, _2, _3, userData ) );
 }
 
@@ -544,98 +548,98 @@ void replxx_add_completion( replxx_completions* lc, const char* str ) {
 }
 
 void replxx_add_color_completion( replxx_completions* lc, const char* str, ReplxxColor color ) {
-	lc->data.emplace_back( str, static_cast<replxx::Replxx::Color>( color ) );
+	lc->data.emplace_back( str, static_cast<rena::replxx::Replxx::Color>( color ) );
 }
 
 void replxx_history_add( ::Replxx* replxx_, const char* line ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->history_add( line );
 }
 
 void replxx_set_max_history_size( ::Replxx* replxx_, int len ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_max_history_size( len );
 }
 
 void replxx_set_max_hint_rows( ::Replxx* replxx_, int count ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_max_hint_rows( count );
 }
 
 void replxx_set_hint_delay( ::Replxx* replxx_, int milliseconds ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_hint_delay( milliseconds );
 }
 
 void replxx_set_completion_count_cutoff( ::Replxx* replxx_, int count ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_completion_count_cutoff( count );
 }
 
 void replxx_set_word_break_characters( ::Replxx* replxx_, char const* breakChars_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_word_break_characters( breakChars_ );
 }
 
 void replxx_set_double_tab_completion( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_double_tab_completion( val ? true : false );
 }
 
 void replxx_set_complete_on_empty( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_complete_on_empty( val ? true : false );
 }
 
 void replxx_set_no_color( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_no_color( val ? true : false );
 }
 
 void replxx_set_indent_multiline( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_indent_multiline( val ? true : false );
 }
 
 void replxx_set_beep_on_ambiguous_completion( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_beep_on_ambiguous_completion( val ? true : false );
 }
 
 void replxx_set_immediate_completion( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_immediate_completion( val ? true : false );
 }
 
 void replxx_set_unique_history( ::Replxx* replxx_, int val ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->set_unique_history( val ? true : false );
 }
 
 void replxx_enable_bracketed_paste( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->enable_bracketed_paste();
 }
 
 void replxx_disable_bracketed_paste( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->disable_bracketed_paste();
 }
 
 ReplxxHistoryScan* replxx_history_scan_start( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( reinterpret_cast<ReplxxHistoryScan*>( replxx->history_scan().release() ) );
 }
 
 void replxx_history_scan_stop( ::Replxx*, ReplxxHistoryScan* historyScan_ ) {
-	delete reinterpret_cast<replxx::Replxx::HistoryScanImpl*>( historyScan_ );
+	delete reinterpret_cast<rena::replxx::Replxx::HistoryScanImpl*>( historyScan_ );
 }
 
 int replxx_history_scan_next( ::Replxx*, ReplxxHistoryScan* historyScan_, ReplxxHistoryEntry* historyEntry_ ) {
-	replxx::Replxx::HistoryScanImpl* historyScan( reinterpret_cast<replxx::Replxx::HistoryScanImpl*>( historyScan_ ) );
+	rena::replxx::Replxx::HistoryScanImpl* historyScan( reinterpret_cast<rena::replxx::Replxx::HistoryScanImpl*>( historyScan_ ) );
 	bool hasNext( historyScan->next() );
 	if ( hasNext ) {
-		replxx::Replxx::HistoryEntry const& historyEntry( historyScan->get() );
+		rena::replxx::Replxx::HistoryEntry const& historyEntry( historyScan->get() );
 		historyEntry_->timestamp = historyEntry.timestamp().c_str();
 		historyEntry_->text = historyEntry.text().c_str();
 	}
@@ -645,14 +649,14 @@ int replxx_history_scan_next( ::Replxx*, ReplxxHistoryScan* historyScan_, Replxx
 /* Save the history in the specified file. On success 0 is returned
  * otherwise -1 is returned. */
 int replxx_history_sync( ::Replxx* replxx_, const char* filename ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->history_sync( filename ) ? 0 : -1 );
 }
 
 /* Save the history in the specified file. On success 0 is returned
  * otherwise -1 is returned. */
 int replxx_history_save( ::Replxx* replxx_, const char* filename ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->history_save( filename ) ? 0 : -1 );
 }
 
@@ -662,17 +666,17 @@ int replxx_history_save( ::Replxx* replxx_, const char* filename ) {
  * If the file exists and the operation succeeded 0 is returned, otherwise
  * on error -1 is returned. */
 int replxx_history_load( ::Replxx* replxx_, const char* filename ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->history_load( filename ) ? 0 : -1 );
 }
 
 void replxx_history_clear( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	replxx->history_clear();
 }
 
 int replxx_history_size( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->history_size() );
 }
 
@@ -712,25 +716,25 @@ void replxx_debug_dump_print_codes(void) {
 #endif // __REPLXX_DEBUG__
 
 int replxx_install_window_change_handler( ::Replxx* replxx_ ) {
-	replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<replxx::Replxx::ReplxxImpl*>( replxx_ ) );
+	rena::replxx::Replxx::ReplxxImpl* replxx( reinterpret_cast<rena::replxx::Replxx::ReplxxImpl*>( replxx_ ) );
 	return ( replxx->install_window_change_handler() );
 }
 
-using namespace replxx::color;
+using namespace rena::replxx::color;
 ReplxxColor replxx_color_combine( ReplxxColor color1_, ReplxxColor color2_ ) {
-	return static_cast<ReplxxColor>( static_cast<replxx::Replxx::Color>( color1_ ) | static_cast<replxx::Replxx::Color>( color2_ ) );
+	return static_cast<ReplxxColor>( static_cast<rena::replxx::Replxx::Color>( color1_ ) | static_cast<rena::replxx::Replxx::Color>( color2_ ) );
 }
 
 ReplxxColor replxx_color_bg( ReplxxColor color_ ) {
-	return static_cast<ReplxxColor>( color::bg( static_cast<replxx::Replxx::Color>( color_ ) ) );
+	return static_cast<ReplxxColor>( color::bg( static_cast<rena::replxx::Replxx::Color>( color_ ) ) );
 }
 
 ReplxxColor replxx_color_bold( ReplxxColor color_ ) {
-	return static_cast<ReplxxColor>( color::bold( static_cast<replxx::Replxx::Color>( color_ ) ) );
+	return static_cast<ReplxxColor>( color::bold( static_cast<rena::replxx::Replxx::Color>( color_ ) ) );
 }
 
 ReplxxColor replxx_color_underline( ReplxxColor color_ ) {
-	return static_cast<ReplxxColor>( color::underline( static_cast<replxx::Replxx::Color>( color_ ) ) );
+	return static_cast<ReplxxColor>( color::underline( static_cast<rena::replxx::Replxx::Color>( color_ ) ) );
 }
 
 ReplxxColor replxx_color_grayscale( int level_ ) {

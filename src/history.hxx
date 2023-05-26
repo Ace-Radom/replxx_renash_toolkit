@@ -11,8 +11,8 @@
 
 namespace std {
 template<>
-struct hash<replxx::UnicodeString> {
-	std::size_t operator()( replxx::UnicodeString const& us_ ) const {
+struct hash<rena::replxx::UnicodeString> {
+	std::size_t operator()( rena::replxx::UnicodeString const& us_ ) const {
 		std::size_t h( 0 );
 		char32_t const* p( us_.get() );
 		char32_t const* e( p + us_.length() );
@@ -25,6 +25,8 @@ struct hash<replxx::UnicodeString> {
 	}
 };
 }
+
+namespace rena {
 
 namespace replxx {
 
@@ -157,6 +159,8 @@ public:
 };
 
 }
+
+} // namespace rena
 
 #endif
 

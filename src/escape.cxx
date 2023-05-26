@@ -4,6 +4,8 @@
 
 #ifndef _WIN32
 
+namespace rena {
+
 namespace replxx {
 
 namespace EscapeSequenceProcessing { // move these out of global namespace
@@ -885,6 +887,8 @@ char32_t doDispatch(char32_t c) {
 }	// namespace EscapeSequenceProcessing // move these out of global namespace
 
 }
+
+} // namespace rena
 
 #endif /* #ifndef _WIN32 */
 

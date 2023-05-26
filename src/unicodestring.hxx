@@ -8,6 +8,8 @@
 
 #include "conversion.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 inline bool case_sensitive_equal( char32_t l, char32_t r ) {
@@ -223,6 +225,8 @@ public:
 };
 
 }
+
+} // namespace rena
 
 #endif
 

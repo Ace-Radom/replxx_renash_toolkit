@@ -20,6 +20,8 @@
 #include "prompt.hxx"
 #include "util.hxx"
 
+namespace rena {
+
 namespace replxx {
 
 Prompt::Prompt( Terminal& terminal_ )
@@ -87,4 +89,6 @@ void DynamicPrompt::updateSearchPrompt(void) {
 }
 
 }
+
+} // namespace rena
 

@@ -12,6 +12,8 @@
 
 using namespace std;
 
+namespace rena {
+
 namespace replxx {
 
 namespace locale {
@@ -106,3 +108,4 @@ int copyString32to8( char* dst, int dstSize, const char32_t* src, int srcSize ) 
 
 }
 
+} // namespace rena
